@@ -7,21 +7,21 @@ pipeline {
     nodejs 'node-latest'
   }
   parameters {
-    string(name: 'IMAGE_REPO_NAME', defaultValue: 'jamessmith52963/basic-react', description: '')
+    string(name: 'IMAGE_REPO_NAME', defaultValue: 'grv231/basic-react-app', description: '')
     string(name: 'LATEST_BUILD_TAG', defaultValue: 'build-latest', description: '')
     string(name: 'DOCKER_COMPOSE_FILENAME', defaultValue: 'docker-compose.yml', description: '')
     string(name: 'DOCKER_STACK_NAME', defaultValue: 'react_stack', description: '')
     booleanParam(name: 'NPM_RUN_TEST', defaultValue: true, description: '')
     booleanParam(name: 'PUSH_DOCKER_IMAGES', defaultValue: true, description: '')
-    booleanParam(name: 'DOCKER_STACK_RM', defaultValue: false, description: 'Remove previous stack.  This is required if you have updated any secrets or configs as these cannot be updated. ')
+    booleanParam(name: 'DOCKER_STACK_RM', defaultValue: false, description: 'Remove the previous stack, required if you have updated any secrets or configs as these cannot be updated. ')
   }
   stages {
-    stage('npm install'){
+    stage('npm_install'){
       steps{
          sh "npm install"
       }
     }
-    stage('npm test'){
+    stage('npm_test'){
 	    when{
 		    expression{
 			    return params.NPM_RUN_TEST
@@ -31,7 +31,7 @@ pipeline {
 	  sh "npm test -- --coverage"	
 	}
     }
-    stage('npm build'){
+    stage('npm_build'){
       steps{
         sh "npm run build"
       }
@@ -87,7 +87,7 @@ pipeline {
   }
   post {
     always {
-      sh 'echo "This will always run"'
+      sh 'echo "It will always run"'
     }
   }
 }
